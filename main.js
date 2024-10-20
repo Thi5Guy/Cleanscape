@@ -14,6 +14,59 @@ scoreText.innerHTML = "Score: " + score; // Initialize score display
 gameOverBox.style.display = 'none'; // Initially hide Game Over box
 
 
+// Get references to the audio element and the sound button
+const audio = document.getElementById("audio");
+const soundButton = document.getElementById("soundness-button");
+
+// Variable to track whether the audio is playing
+let isPlaying = false; // Initially set to false, so the first click plays the audio
+
+// Add event listener for the sound button to toggle play/pause
+soundButton.addEventListener("click", () => {
+    if (isPlaying) {
+        audio.pause();
+        audio.currentTime = 0; // Reset the audio to the beginning
+    } else {
+        audio.play().catch(error => {
+            console.log('Audio play was prevented:', error);
+        });
+    }
+    isPlaying = !isPlaying; // Toggle the state
+});
+
+
+
+// Get reference to the bin1 audio element
+const bin1Sound = document.getElementById("bin1-sound");
+
+// Function to handle dropping trash into bin1
+function dropTrash(event) {
+    event.preventDefault();
+    
+    // Get the trash that is being dragged
+    const draggedElement = event.dataTransfer.getData("text");
+    const trashElement = document.getElementById(draggedElement);
+    
+    // Check if the drop target is bin1
+    if (event.target.name === "plastic") {  // Assuming bin1 is the plastic bin
+        event.target.appendChild(trashElement); // Add the trash to bin1
+        
+        // Play the bin1 sound effect when the rubbish is dropped
+        bin1Sound.play().catch(error => {
+            console.log('Sound playback was prevented:', error);
+        });
+    }
+}
+
+// Function to allow dropping (for dragover event)
+function allowDrop(event) {
+    event.preventDefault();
+}
+
+
+
+
+
 
 
 // Load trash items and set the initial trash
